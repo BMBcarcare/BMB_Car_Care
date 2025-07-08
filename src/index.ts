@@ -52,8 +52,6 @@ databaseService
   .then(() => {
     databaseService.indexBlogs()
     databaseService.indexBlogPromotions()
-    databaseService.indexAppointments()
-    databaseService.indexContacts()
     databaseService.indexServices()
     console.log('✅ Connected to MongoDB')
   })

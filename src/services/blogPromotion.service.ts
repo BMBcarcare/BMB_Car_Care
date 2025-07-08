@@ -21,7 +21,7 @@ class BlogPromotionService {
   async getAllBlogPromotions({ limit, page }: { limit: number; page: number }) {
     const [data, total] = await Promise.all([
       databaseService.blogPromotions
-        .find()
+        .find({}, { projection: { content: 0 } })
         .sort({ created_at: -1 })
         .skip(limit * (page - 1))
         .limit(limit)

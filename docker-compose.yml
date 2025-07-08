@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  nhatphat-automation:
+    build: .
+    image: nhatphat-automation:latest
+    ports:
+      - '5000:5000'
+    env_file:
+      - .env
+    restart: always

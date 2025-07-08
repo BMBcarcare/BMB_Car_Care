@@ -12,94 +12,70 @@ class ServiceService {
 
   async getServicesByCategoryId(category_id: string) {
     const result = await databaseService.services
-      .aggregate([
-        {
-          $match: {
-            category_id: new ObjectId(category_id)
+      .aggregate(
+        [
+          {
+            $match: {
+              category_id: new ObjectId(category_id)
+            }
+          },
+          {
+            $sort: {
+              created_at: 1
+            }
+          },
+          { $limit: 5 },
+          {
+            $lookup: {
+              from: 'categories',
+              localField: 'category_id',
+              foreignField: '_id',
+              as: 'category'
+            }
+          },
+          {
+            $unwind: '$category'
+          },
+          {
+            $project: {
+              _id: 1,
+              category_id: 1,
+              name: 1,
+              content: 1,
+              price: 1,
+              images: 1,
+              extra_images: 1,
+              extra_images_text: 1,
+              created_at: 1,
+              updated_at: 1,
+              category_name: '$category.name'
+            }
           }
-        },
-        {
-          $sort: {
-            created_at: 1
-          }
-        },
-        {
-          $lookup: {
-            from: 'categories',
-            localField: 'category_id',
-            foreignField: '_id',
-            as: 'category'
-          }
-        },
-        {
-          $unwind: '$category'
-        },
-        {
-          $project: {
-            _id: 1,
-            category_id: 1,
-            name: 1,
-            content: 1,
-            price: 1,
-            images: 1,
-            extra_images: 1,
-            extra_images_text: 1,
-            created_at: 1,
-            updated_at: 1,
-            category_name: '$category.name'
-          }
-        },
+        ],
         {
           allowDiskUse: true
         }
-      ])
+      )
       .toArray()
 
     return result
   }
 
-  // async getAllServices() {
-  //   const pipeline: any[] = [
-  //     {
-  //       $lookup: {
-  //         from: 'categories',
-  //         localField: 'category_id',
-  //         foreignField: '_id',
-  //         as: 'category'
-  //       }
-  //     },
-  //     {
-  //       $unwind: '$category'
-  //     },
-  //     {
-  //       $sort: { created_at: 1 }
-  //     },
-  //     {
-  //       $project: {
-  //         _id: 1,
-  //         title: 1,
-  //         category_id: 1,
-  //         name: 1,
-  //         content: 1,
-  //         price: 1,
-  //         images: 1,
-  //         extra_images: 1,
-  //         extra_images_text: 1,
-  //         created_at: 1,
-  //         category_name: '$category.name'
-  //       }
-  //     }
-  //   ]
-
-  //   const result = await databaseService.services.aggregate(pipeline, { allowDiskUse: true }).toArray()
-  //   return result
-  // }
-
   async getAllServices() {
     const pipeline: any[] = [
+      // Chỉ giữ trường nhẹ để sort, tránh load content nặng
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          category_id: 1,
+          created_at: 1
+        }
+      },
       {
         $sort: { created_at: 1 }
       },
+      // Join bảng category
       {
         $lookup: {
           from: 'categories',
@@ -111,18 +87,12 @@ class ServiceService {
       {
         $unwind: '$category'
       },
+      // Trả ra kết quả cuối cùng gọn nhẹ
       {
         $project: {
           _id: 1,
-          category_id: 1,
           name: 1,
-          content: 1,
-          price: 1,
-          images: 1,
-          extra_images: 1,
-          extra_images_text: 1,
-          created_at: 1,
-          updated_at: 1,
+          category_id: 1,
           category_name: '$category.name'
         }
       }

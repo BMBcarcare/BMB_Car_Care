@@ -64,10 +64,7 @@ const app = express()
 // initFolder()
 app.use(
   cors({
-    origin: (origin, callback) => {
-      callback(null, true) // Cho phép tất cả origin
-    },
-    credentials: true
+    origin: '*'
   })
 )
 

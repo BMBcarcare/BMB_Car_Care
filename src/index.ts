@@ -40,13 +40,20 @@ dayjs.tz.setDefault('Asia/Bangkok')
 moment.tz.setDefault('Asia/Bangkok')
 
 // connectDB()
-databaseService.connect().then(() => {
-  // databaseService.indexBlogs()
-  // databaseService.indexBlogPromotions()
-  // databaseService.indexAppointments()
-  // databaseService.indexContacts()
-  // databaseService.indexServices()
-})
+// databaseService.connect().then(() => {
+//   // databaseService.indexBlogs()
+//   // databaseService.indexBlogPromotions()
+//   // databaseService.indexAppointments()
+//   // databaseService.indexContacts()
+//   // databaseService.indexServices()
+// })
+databaseService
+  .connect()
+  .then(() => console.log('✅ Connected to MongoDB'))
+  .catch((err) => {
+    console.error('❌ MongoDB connection error:', err)
+    process.exit(1)
+  })
 const app = express()
 
 // initFolder()
@@ -103,6 +110,6 @@ const io = new Server(httpServer, {
   }
 })
 
-const server = httpServer.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
 })

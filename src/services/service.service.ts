@@ -36,6 +36,8 @@ class ServiceService {
         },
         {
           $project: {
+            _id: 1,
+            category_id: 1,
             name: 1,
             content: 1,
             price: 1,
@@ -44,12 +46,11 @@ class ServiceService {
             extra_images_text: 1,
             created_at: 1,
             updated_at: 1,
-            author_id: 1,
-            category: {
-              _id: '$category._id',
-              name: '$category.name'
-            }
+            category_name: '$category.name'
           }
+        },
+        {
+          allowDiskUse: true
         }
       ])
       .toArray()
@@ -57,8 +58,48 @@ class ServiceService {
     return result
   }
 
+  // async getAllServices() {
+  //   const pipeline: any[] = [
+  //     {
+  //       $lookup: {
+  //         from: 'categories',
+  //         localField: 'category_id',
+  //         foreignField: '_id',
+  //         as: 'category'
+  //       }
+  //     },
+  //     {
+  //       $unwind: '$category'
+  //     },
+  //     {
+  //       $sort: { created_at: 1 }
+  //     },
+  //     {
+  //       $project: {
+  //         _id: 1,
+  //         title: 1,
+  //         category_id: 1,
+  //         name: 1,
+  //         content: 1,
+  //         price: 1,
+  //         images: 1,
+  //         extra_images: 1,
+  //         extra_images_text: 1,
+  //         created_at: 1,
+  //         category_name: '$category.name'
+  //       }
+  //     }
+  //   ]
+
+  //   const result = await databaseService.services.aggregate(pipeline, { allowDiskUse: true }).toArray()
+  //   return result
+  // }
+
   async getAllServices() {
     const pipeline: any[] = [
+      {
+        $sort: { created_at: 1 }
+      },
       {
         $lookup: {
           from: 'categories',
@@ -71,9 +112,6 @@ class ServiceService {
         $unwind: '$category'
       },
       {
-        $sort: { created_at: 1 }
-      },
-      {
         $project: {
           _id: 1,
           category_id: 1,
@@ -83,7 +121,6 @@ class ServiceService {
           images: 1,
           extra_images: 1,
           extra_images_text: 1,
-          author_id: 1,
           created_at: 1,
           updated_at: 1,
           category_name: '$category.name'
@@ -91,10 +128,10 @@ class ServiceService {
       }
     ]
 
-    const result = await databaseService.services.aggregate(pipeline).toArray()
+    const result = await databaseService.services.aggregate(pipeline, { allowDiskUse: true }).toArray()
+
     return result
   }
-
   async getServiceById(service_id: string) {
     const result = await databaseService.services
       .aggregate([

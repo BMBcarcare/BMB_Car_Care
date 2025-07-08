@@ -49,7 +49,14 @@ moment.tz.setDefault('Asia/Bangkok')
 // })
 databaseService
   .connect()
-  .then(() => console.log('✅ Connected to MongoDB'))
+  .then(() => {
+    databaseService.indexBlogs()
+    databaseService.indexBlogPromotions()
+    databaseService.indexAppointments()
+    databaseService.indexContacts()
+    databaseService.indexServices()
+    console.log('✅ Connected to MongoDB')
+  })
   .catch((err) => {
     console.error('❌ MongoDB connection error:', err)
     process.exit(1)

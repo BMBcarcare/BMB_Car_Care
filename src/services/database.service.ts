@@ -91,15 +91,11 @@ class DatabaseService {
     }
   }
   async indexServices() {
-    const exist = await this.services.indexExists('name_1')
-    if (!exist) {
-      await this.services.createIndex({ name: 1 }, { unique: true })
-    }
+    // Tạo index duy nhất cho trường name
+    await this.services.createIndex({ name: 1 }, { unique: true })
 
-    const exist2 = await this.services.indexExists('author_id_1_created_at_1')
-    if (!exist2) {
-      await this.services.createIndex({ author_id: 1, created_at: 1 })
-    }
+    // Tạo index cho author_id + created_at (đã kiểm tra sẵn)
+    await this.services.createIndex({ author_id: 1, created_at: 1 })
   }
 
   get users(): Collection<User> {

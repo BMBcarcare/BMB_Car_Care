@@ -64,6 +64,7 @@ export const getServicesByCategoryIdController = async (
     const services = await serviceService.getServicesByCategoryId(category_id)
     return res.json(services)
   } catch (err) {
+    console.log(err)
     return res.status(400).json({ message: 'Invalid category_id' })
   }
 }

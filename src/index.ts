@@ -68,7 +68,7 @@ const app = express()
 //     allowedHeaders: ['Content-Type', 'Authorization']
 //   })
 // )
-const whitelist = ['https://duc-huy-user-sua-xe.vercel.app/']
+const whitelist = ['https://duc-huy-user-sua-xe.vercel.app']
 app.use(
   cors({
     origin: (origin, callback) => {

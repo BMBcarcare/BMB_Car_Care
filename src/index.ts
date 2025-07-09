@@ -85,11 +85,7 @@ app.use(express.json({ limit: '4mb' }))
 //   })
 // )
 app.use(helmet())
-app.use(
-  cors({
-    origin: '*'
-  })
-)
+app.use(cors())
 app.use(
   logger('dev', {
     skip: (req: Request) => req.url.indexOf('socket') >= 0

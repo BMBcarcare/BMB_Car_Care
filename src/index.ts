@@ -62,31 +62,32 @@ databaseService
 const app = express()
 
 // initFolder()
-app.use(
-  cors({
-    origin: '*'
-  })
-)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.set('trust proxy', 1)
 app.use(express.json({ limit: '4mb' }))
 
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'", 'https:'],
+//         scriptSrc: ["'self'", 'https:', "'unsafe-inline'"],
+//         styleSrc: ["'self'", 'https:', "'unsafe-inline'"],
+//         imgSrc: ["'self'", 'data:', 'https:'],
+//         connectSrc: ["'self'", 'https:'],
+//         fontSrc: ["'self'", 'https:', 'data:'],
+//         objectSrc: ["'none'"],
+//         upgradeInsecureRequests: []
+//       }
+//     }
+//   })
+// )
+app.use(helmet())
 app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'", 'https:'],
-        scriptSrc: ["'self'", 'https:', "'unsafe-inline'"],
-        styleSrc: ["'self'", 'https:', "'unsafe-inline'"],
-        imgSrc: ["'self'", 'data:', 'https:'],
-        connectSrc: ["'self'", 'https:'],
-        fontSrc: ["'self'", 'https:', 'data:'],
-        objectSrc: ["'none'"],
-        upgradeInsecureRequests: []
-      }
-    }
+  cors({
+    origin: '*'
   })
 )
 app.use(

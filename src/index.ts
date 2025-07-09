@@ -60,29 +60,30 @@ databaseService
     process.exit(1)
   })
 const app = express()
-// app.use(cors())
-// app.use(
-//   cors({
-//     origin: '*',
-//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-//     allowedHeaders: ['Content-Type', 'Authorization']
-//   })
-// )
-const whitelist = ['https://duc-huy-user-sua-xe.vercel.app']
+app.use(cors())
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || whitelist.includes(origin)) {
-        callback(null, true)
-      } else {
-        callback(new Error('Not allowed by CORS'))
-      }
-    },
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
   })
 )
+const whitelist = ['https://duc-huy-user-sua-xe.vercel.app']
+// app.use(
+//   cors({
+//     origin: (origin, callback) => {
+//       if (!origin || whitelist.includes(origin)) {
+//         callback(null, true)
+//       } else {
+//         callback(new Error('Not allowed by CORS'))
+//       }
+//     },
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+//     credentials: true
+//   })
+// )
 // initFolder()
 
 app.use(bodyParser.json())

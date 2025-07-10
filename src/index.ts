@@ -62,7 +62,15 @@ databaseService
 const app = express()
 
 // initFolder()
-app.use(cors())
+// app.use(cors())
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  })
+)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.set('trust proxy', 1)

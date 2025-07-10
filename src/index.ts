@@ -60,54 +60,30 @@ databaseService
     process.exit(1)
   })
 const app = express()
-app.use(cors())
-app.use(
-  cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-  })
-)
-const whitelist = ['https://duc-huy-user-sua-xe.vercel.app']
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       if (!origin || whitelist.includes(origin)) {
-//         callback(null, true)
-//       } else {
-//         callback(new Error('Not allowed by CORS'))
-//       }
-//     },
-//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-//     allowedHeaders: ['Content-Type', 'Authorization'],
-//     credentials: true
-//   })
-// )
-// initFolder()
 
+// initFolder()
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.set('trust proxy', 1)
 app.use(express.json({ limit: '4mb' }))
 
-// app.use(
-//   helmet({
-//     contentSecurityPolicy: {
-//       directives: {
-//         defaultSrc: ["'self'", 'https:'],
-//         scriptSrc: ["'self'", 'https:', "'unsafe-inline'"],
-//         styleSrc: ["'self'", 'https:', "'unsafe-inline'"],
-//         imgSrc: ["'self'", 'data:', 'https:'],
-//         connectSrc: ["'self'", 'https:'],
-//         fontSrc: ["'self'", 'https:', 'data:'],
-//         objectSrc: ["'none'"],
-//         upgradeInsecureRequests: []
-//       }
-//     }
-//   })
-// )
-app.use(helmet())
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'", 'https:'],
+        scriptSrc: ["'self'", 'https:', "'unsafe-inline'"],
+        styleSrc: ["'self'", 'https:', "'unsafe-inline'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+        connectSrc: ["'self'", 'https:'],
+        fontSrc: ["'self'", 'https:', 'data:'],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: []
+      }
+    }
+  })
+)
 app.use(
   logger('dev', {
     skip: (req: Request) => req.url.indexOf('socket') >= 0
@@ -139,6 +115,6 @@ const io = new Server(httpServer, {
   }
 })
 
-const server = app.listen(PORT, () => {
+const server = httpServer.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
 })

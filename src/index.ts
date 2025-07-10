@@ -62,15 +62,15 @@ databaseService
 const app = express()
 
 // initFolder()
-// app.use(cors())
-app.use(
-  cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-  })
-)
+app.use(cors())
+// app.use(
+//   cors({
+//     origin: '*',
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+//     credentials: true
+//   })
+// )
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.set('trust proxy', 1)
@@ -117,11 +117,11 @@ app.use('/api/admin/price-services', priceServiceRouter)
 app.use(defaultErrorHandler)
 
 const httpServer = createServer(app)
-const io = new Server(httpServer, {
-  cors: {
-    origin: true
-  }
-})
+// const io = new Server(httpServer, {
+//   cors: {
+//     origin: true
+//   }
+// })
 
 const server = httpServer.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
